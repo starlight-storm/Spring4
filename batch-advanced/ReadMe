@@ -1,0 +1,5 @@
+実行
+mainクラスに以下を設定する。
+org.springframework.batch.core.launch.support.CommandLineJobRunner
+引数に以下を設定する。csvファイルの名前は適宜修正する。
+classpath:/batch-context.xml job1 inputFile=classpath:/product_csv/3.csv

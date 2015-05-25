@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="productItemReader" class="org.springframework.batch.item.file.FlatFileItemReader"
+		scope="step">
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer">
+					<bean
+						class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="delimiter" value="," />
+						<property name="names" value="name,price" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<bean
+						class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+						<property name="targetType" value="sample.business.domain.Product" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+		<property name="resource" value="#{jobParameters[productFile]}" />
+		<!-- 1行目（見出し）を飛ばす -->
+		<property name="linesToSkip" value="1" />
+	</bean>
+
+	<bean id="productItemWriter"
+		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
+		<property name="dataSource" ref="batchDataSource" />
+		<property name="sql"
+			value="insert into product (name, price) values(:name, :price)" />
+		<property name="itemSqlParameterSourceProvider">
+			<bean
+				class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
+		</property>
+	</bean>
+
+	<bean id="memberItemReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader">
+		<property name="dataSource" ref="batchDataSource" />
+		<property name="rowMapper">
+			<bean
+				class="org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper">
+				<property name="mappedClass" value="sample.business.domain.Member" />
+			</bean>
+		</property>
+		<property name="sql" value="select * from member" />
+	</bean>
+
+	<bean id="memberItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
+		<property name="resource" value="file:c:/member.csv" />
+		<property name="shouldDeleteIfExists" value="true"/><!-- true:上書きを許す -->
+		<property name="lineAggregator">
+			<bean
+				class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+				<property name="fieldExtractor">
+					<bean
+						class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+						<property name="names" value="memberId,name" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+</beans>
