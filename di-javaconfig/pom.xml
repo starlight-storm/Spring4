@@ -4,7 +4,7 @@
   <artifactId>di-annotation</artifactId>
   <version>1.0.0-RELEASE</version>
 
-  <name>DI Annotation Sample</name>
+  <name>DI JavaConfig Sample</name>
 
   <properties>
     <org.springframework-version>4.1.6.RELEASE</org.springframework-version>

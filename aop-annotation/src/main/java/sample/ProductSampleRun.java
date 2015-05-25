@@ -1,9 +1,8 @@
 package sample;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import sample.config.AppConfig;
 import sample.di.business.domain.Product;
 import sample.di.business.service.ProductService;
 
@@ -16,9 +15,10 @@ public class ProductSampleRun {
 
     @SuppressWarnings("resource")
 	public void execute() {
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+		ApplicationContext ctx = new ClassPathXmlApplicationContext(
+                "/sample/config/applicationContext.xml");
         ProductService productService = ctx.getBean(ProductService.class);
-        Product product = productService.getProduct();
+        Product product = productService.findProduct();
         System.out.println(product);
     }
 }

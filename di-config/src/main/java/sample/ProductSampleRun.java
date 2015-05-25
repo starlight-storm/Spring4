@@ -13,7 +13,8 @@ public class ProductSampleRun {
         productSampleRun.execute();
     }
 
-    public void execute() {
+    @SuppressWarnings("resource")
+	public void execute() {
         BeanFactory ctx = new ClassPathXmlApplicationContext(
                 "/sample/config/applicationContext.xml");
         ProductService productService = ctx.getBean(ProductService.class);
