@@ -1,16 +1,16 @@
 package sample.di.business.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import sample.di.business.domain.Product;
 
-@Component
 public class ProductServiceImpl implements ProductService {
-    @Autowired
     private ProductDao productDao;
 
-    public Product getProduct() {
-        return productDao.findProduct();
+    public Product findProduct() {
+        // それっぽく、検索条件をいれてます
+        return productDao.findProduct("ホチキス");
+    }
+
+    public void setProductDao(ProductDao productDao) {
+        this.productDao = productDao;
     }
 }

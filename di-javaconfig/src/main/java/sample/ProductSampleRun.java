@@ -18,7 +18,7 @@ public class ProductSampleRun {
 	public void execute() {
 		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
         ProductService productService = ctx.getBean(ProductService.class);
-        Product product = productService.getProduct();
+        Product product = productService.findProduct();
         System.out.println(product);
     }
 }
