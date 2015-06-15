@@ -9,8 +9,6 @@ public class EntryItemProcessor implements
 
 	public String process(String message)
 			throws Exception {
-		
-		// メッセージを加工してWriterに渡します
 		return message + "!!";
 	}
 }

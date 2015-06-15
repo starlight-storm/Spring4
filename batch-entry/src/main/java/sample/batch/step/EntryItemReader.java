@@ -5,29 +5,25 @@ import org.springframework.stereotype.Component;
 
 import sample.batch.exception.BatchSkipException;
 
-/**
- * {@link ItemReader} with hard-coded input data.
- */
-
 @Component("itemReader")
 public class EntryItemReader implements ItemReader<String> {
-	
-	private String[] input = {"Hello World", "hoge",  "hoge", "hoge", "‚±‚ñ‚É‚¿‚íB¢ŠE", null};
-	
+
+	private String[] input = {"Hello World", "hoge",  "hoge", "hoge", "ï¿½ï¿½ï¿½ï¿½É‚ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½E", null};
+
 	private int index = 0;
-	
+
 	/**
 	 * Reads next record from input
 	 */
-	public String read() throws Exception { 
-		
+	public String read() throws Exception {
+
 		String message = input[index++];
-			
+
 		if(message == null) {
 			return null;
 		}
 		if (message.equals("hoge")) {
-			throw new BatchSkipException("‚¨‚©‚µ‚Èƒf[ƒ^‚Å‚· ["
+			throw new BatchSkipException("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Èƒfï¿½[ï¿½^ï¿½Å‚ï¿½ ["
 					+ message + "]");
 		}
 		return message;
