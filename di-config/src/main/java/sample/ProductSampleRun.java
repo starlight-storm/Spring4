@@ -18,7 +18,10 @@ public class ProductSampleRun {
         BeanFactory ctx = new ClassPathXmlApplicationContext(
                 "/sample/config/applicationContext.xml");
         ProductService productService = ctx.getBean(ProductService.class);
-        Product product = productService.findProduct();
+
+        productService.addProduct(new Product("ホチキス", 100));
+
+        Product product = productService.findByProductName("ホチキス");
         System.out.println(product);
     }
 }
