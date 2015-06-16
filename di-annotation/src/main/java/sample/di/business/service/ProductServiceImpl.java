@@ -10,8 +10,12 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductDao productDao;
 
-    public Product findProduct() {
-        // それっぽく、検索条件をいれてます
-        return productDao.findProduct("ホチキス");
-    }
+	public void addProduct(Product product) {
+		productDao.addProduct(product);
+
+	}
+
+	public Product findByProductName(String name) {
+		 return productDao.findByProductName(name);
+	}
 }
