@@ -4,7 +4,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 
-import sample.di.business.domain.Product;
+import sample.aop.business.domain.Product;
 
 public class MyFirstAspect {
 

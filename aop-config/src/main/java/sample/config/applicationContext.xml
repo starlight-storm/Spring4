@@ -14,7 +14,7 @@
 
   <aop:config>
     <aop:aspect id="myAspect" ref="myFirstAspect">
-      <aop:pointcut id="pc" expression="execution(* findProduct(String))" />
+      <aop:pointcut id="pc" expression="execution(* findByProductName(String))" />
       <aop:before pointcut-ref="pc" method="before" />
       <aop:after pointcut-ref="pc" method="after" />
       <aop:after-returning pointcut-ref="pc" method="afterReturning" returning="product" />

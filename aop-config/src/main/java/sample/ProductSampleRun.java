@@ -1,10 +1,10 @@
 package sample;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import sample.di.business.domain.Product;
-import sample.di.business.service.ProductService;
+import sample.aop.business.domain.Product;
+import sample.aop.business.service.ProductService;
 
 public class ProductSampleRun {
 
@@ -15,10 +15,13 @@ public class ProductSampleRun {
 
     @SuppressWarnings("resource")
 	public void execute() {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext(
+        BeanFactory ctx = new ClassPathXmlApplicationContext(
                 "/sample/config/applicationContext.xml");
         ProductService productService = ctx.getBean(ProductService.class);
-        Product product = productService.findProduct();
+
+        productService.addProduct(new Product("ホチキス", 100));
+
+        Product product = productService.findByProductName("ホチキス");
         System.out.println(product);
     }
 }
