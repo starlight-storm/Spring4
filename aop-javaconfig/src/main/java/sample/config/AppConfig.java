@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import sample.aop.MyFirstAspect;
-import sample.di.business.service.ProductServiceImpl;
-import sample.di.dataaccess.ProductDaoImpl;
+import sample.aop.business.service.ProductServiceImpl;
+import sample.aop.dataaccess.ProductDaoImpl;
 
 @Configuration
 @EnableAspectJAutoProxy

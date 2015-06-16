@@ -1,4 +1,4 @@
-package sample.di.business.domain;
+package sample.aop.business.domain;
 
 public class Product {
     private String name;

@@ -10,12 +10,12 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
-import sample.di.business.domain.Product;
+import sample.aop.business.domain.Product;
 
 @Aspect
 public class MyFirstAspect {
 
-    @Before("execution(* findProduct(String))")
+    @Before("execution(* findByProductName(String))")
     public void before(JoinPoint jp) {
         // メソッド開始時にWeavingするAdvice
         System.out.println("Hello Before! *** メソッドが呼ばれる前に出てくるよ!");
