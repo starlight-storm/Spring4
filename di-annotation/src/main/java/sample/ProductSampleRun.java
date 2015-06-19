@@ -15,6 +15,7 @@ public class ProductSampleRun {
 
     @SuppressWarnings("resource")
 	public void execute() {
+    	// BeanFactoryはApplicationContextに書替えてもOK
         BeanFactory ctx = new ClassPathXmlApplicationContext(
                 "/sample/config/applicationContext.xml");
         ProductService productService = ctx.getBean(ProductService.class);
