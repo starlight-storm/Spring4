@@ -1,6 +1,6 @@
 package sample;
 
-import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import sample.config.AppConfig;
@@ -16,7 +16,7 @@ public class ProductSampleRun {
 
     @SuppressWarnings("resource")
 	public void execute() {
-        BeanFactory ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+    	ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
         ProductService productService = ctx.getBean(ProductService.class);
 
         productService.addProduct(new Product("ホチキス", 100));
