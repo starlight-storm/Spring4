@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sample.mybatis.business.service.PetDao">
+
+    <select id="findById" parameterType="int" resultType="sample.mybatis.business.domain.Pet">
+        SELECT * FROM PET WHERE PET_ID = #{id}
+    </select>
+    <select id="findAll" resultType="sample.mybatis.business.domain.Pet">
+        SELECT * FROM PET
+    </select>
+<!--     <resultMap id="petResultMap" type="sample.entity.Pet"> -->
+<!--         <id property="petId" column="PET_ID" /> -->
+<!--         <result property="petName" column="PET_NAME" /> -->
+<!--         <result property="price" column="PRICE" /> -->
+<!--         <result property="birthDate" column="BIRTH_DATE" /> -->
+<!--     </resultMap> -->
+
+
+</mapper>

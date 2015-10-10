@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:context="http://www.springframework.org/schema/context" 
+  xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:jee="http://www.springframework.org/schema/jee"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/jdbc
+    http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+    http://www.springframework.org/schema/tx 
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/jee
+    http://www.springframework.org/schema/jee/spring-jee.xsd
+    ">
+  
+  <bean id="entityManagerFactory"
+    class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="persistenceProviderClass" value="org.hibernate.jpa.HibernatePersistenceProvider" />
+    <property name="packagesToScan" value="sample.jpa.business.domain" />
+    <property name="jpaProperties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+        <prop key="hibernate.show_sql">true</prop>
+        <prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
+      </props>
+    </property>
+  </bean>
+  
+  <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <property name="entityManagerFactory" ref="entityManagerFactory" />
+  </bean>
+  
+<!--   <jee:jndi-lookup id="entityManagerFactory" jndi-name="persistence/MyEntityManagerFactory"/> -->
+  
+  <tx:annotation-driven transaction-manager="transactionManager" />
+
+  <context:component-scan base-package="sample.jpa.dataaccess"/>
+  
+  <jdbc:embedded-database id="dataSource" type="HSQL">
+    <jdbc:script location="script/table.sql"/>
+    <jdbc:script location="script/data.sql"/>
+  </jdbc:embedded-database>
+  
+</beans>
