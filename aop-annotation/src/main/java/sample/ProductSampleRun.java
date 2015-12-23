@@ -8,20 +8,19 @@ import sample.aop.business.service.ProductService;
 
 public class ProductSampleRun {
 
-    public static void main(String[] args) {
-        ProductSampleRun productSampleRun = new ProductSampleRun();
-        productSampleRun.execute();
-    }
+	public static void main(String[] args) {
+		ProductSampleRun productSampleRun = new ProductSampleRun();
+		productSampleRun.execute();
+	}
 
-    @SuppressWarnings("resource")
+	@SuppressWarnings("resource")
 	public void execute() {
-        BeanFactory ctx = new ClassPathXmlApplicationContext(
-                "/sample/config/applicationContext.xml");
-        ProductService productService = ctx.getBean(ProductService.class);
+		BeanFactory ctx = new ClassPathXmlApplicationContext("/sample/config/applicationContext.xml");
+		ProductService productService = ctx.getBean(ProductService.class);
 
-        productService.addProduct(new Product("ホチキス", 100));
+		productService.addProduct(new Product("ホチキス", 100));
 
-        Product product = productService.findByProductName("ホチキス");
-        System.out.println(product);
-    }
+		Product product = productService.findByProductName("ホチキス");
+		System.out.println(product);
+	}
 }
