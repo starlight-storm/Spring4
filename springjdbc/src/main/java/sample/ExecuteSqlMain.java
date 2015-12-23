@@ -1,5 +1,6 @@
 package sample;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -12,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -21,6 +23,8 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 import sample.config.DataSourceConfig;
@@ -42,7 +46,7 @@ public class ExecuteSqlMain {
         
         // JdbcTemplate と NamedParameterJdbcTemplateのオブジェクトを取得
         JdbcTemplate jdbcTemplate = ctx.getBean(JdbcTemplate.class);
-        NamedParameterJdbcTemplate npJdbcTemplate = ctx.getBean(NamedParameterJdbcTemplate.class);
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = ctx.getBean(NamedParameterJdbcTemplate.class);
 
         // SELECT 文　～ドメインへ変換しない場合
         // queryForInt メソッド
@@ -226,7 +230,7 @@ public class ExecuteSqlMain {
 
         // NamedParameterJdbcTemplateを使用
         // メソッドチェーンで記述する場合
-        npJdbcTemplate.update(
+        namedParameterJdbcTemplate.update(
                 " INSERT INTO PET (PET_ID, PET_NAME, OWNER_NAME, PRICE, BIRTH_DATE)" +
                     " VALUES (:PET_ID, :PET_NAME, :OWNER_NAME, :PRICE, :BIRTH_DATE)"
                 , new MapSqlParameterSource()
@@ -246,7 +250,7 @@ public class ExecuteSqlMain {
         map2.addValue("OWNER_NAME", pet.getOwnerName());
         map2.addValue("PRICE", pet.getPrice());
         map2.addValue("BIRTH_DATE", pet.getBirthDate());
-        npJdbcTemplate.update(
+        namedParameterJdbcTemplate.update(
             " INSERT INTO PET (PET_ID, PET_NAME, OWNER_NAME, PRICE, BIRTH_DATE)" +
                 " VALUES (:PET_ID, :PET_NAME, :OWNER_NAME, :PRICE, :BIRTH_DATE)"
             ,map2
@@ -256,7 +260,7 @@ public class ExecuteSqlMain {
 
         // BeanPropertySqlParameterSourceを使用し、ドメインからパラメータへの変換を自動化
         BeanPropertySqlParameterSource beanProps = new BeanPropertySqlParameterSource(pet);
-        npJdbcTemplate.update(
+        namedParameterJdbcTemplate.update(
             " INSERT INTO PET (PET_ID, PET_NAME, OWNER_NAME, PRICE, BIRTH_DATE)" +
                 " VALUES (:petId, :petName, :ownerName, :price, :birthDate)"
             ,beanProps
@@ -266,38 +270,38 @@ public class ExecuteSqlMain {
         
         // バッチアップデート、プロシージャコール
         // batchUpdate メソッドを使用したバッチアップデート
-        // 更新データとして、Objectの配列を使用する場合
-        List<Object[]> argArray = new ArrayList<Object[]>();
-        argArray.add(new Object[]{"owner02", 2});
-        argArray.add(new Object[]{"owner03", 3});
-        argArray.add(new Object[]{"owner04", 4});
-        argArray.add(new Object[]{"owner05", 5});
+        final ArrayList<Pet> pList = new ArrayList<Pet>();
+        pet = new Pet();
+        pet.setPetId(1);
+        pet.setOwnerName("owner001");
+        pList.add(pet);
+        pet = new Pet();
+        pet.setPetId(2);
+        pet.setOwnerName("owner002");
+        pList.add(pet);
+        pet = new Pet();
+        pet.setPetId(3);
+        pet.setOwnerName("owner003");
         
-        int[] num = jdbcTemplate.batchUpdate(
-            " UPDATE PET SET OWNER_NAME=? WHERE PET_ID=?"
-            , argArray);
-
-        // 更新データとして、MapSqlParameterSourceを使用する場合
-        List<MapSqlParameterSource> mList = new ArrayList<MapSqlParameterSource>();
-        MapSqlParameterSource m1 = new MapSqlParameterSource()
-        .addValue("PET_ID", 2)
-        .addValue("OWNER_NAME", "owner002");
-        mList.add(m1);
-        MapSqlParameterSource m2 = new MapSqlParameterSource()
-        .addValue("PET_ID", 3)
-        .addValue("OWNER_NAME", "owner003");
-        mList.add(m2);
-        MapSqlParameterSource m3 = new MapSqlParameterSource()
-        .addValue("PET_ID", 4)
-        .addValue("OWNER_NAME", "owner004");
-        mList.add(m3);
-        MapSqlParameterSource m4 = new MapSqlParameterSource()
-        .addValue("PET_ID", 5)
-        .addValue("OWNER_NAME", "owner005");
-        mList.add(m4);
-        num = npJdbcTemplate.batchUpdate(
-                " UPDATE PET SET OWNER_NAME=:OWNER_NAME WHERE PET_ID=:PET_ID"
-                , mList.toArray(new MapSqlParameterSource[]{}));
+        pList.add(pet);
+        
+        //JdbcTemplateのbatchUpdate
+        int[] num = jdbcTemplate.batchUpdate("UPDATE PET SET OWNER_NAME=? WHERE PET_ID=?", new BatchPreparedStatementSetter() {            
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, pList.get(i).getOwnerName());
+                ps.setInt(2, pList.get(i).getPetId());
+            }
+            @Override
+            public int getBatchSize() {
+                return pList.size();
+            }
+        });
+        
+        //NamedParameterJdbcTemplateのbatchUpdate
+        SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(pList.toArray());
+        num = namedParameterJdbcTemplate.batchUpdate(
+                "UPDATE PET SET OWNER_NAME=:ownerName WHERE PET_ID=:petId", batch);        
         
         
         // SimpleJdbcCallを使用したプロシージャコール
