@@ -12,11 +12,11 @@
      http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-  <context:component-scan base-package="sample" />
+  <context:component-scan base-package="sample.aop" />
 
     <aop:config>
         <aop:aspect id="myAspect" ref="myFirstAspect">
-            <aop:pointcut id="pc" expression="execution(* findProduct(String))"/>
+            <aop:pointcut id="pc" expression="execution(* findByProductName(String))"/>
             <aop:before pointcut-ref="pc" method="before"/>
             <aop:after pointcut-ref="pc" method="after"/>
             <aop:after-returning pointcut-ref="pc" method="afterReturning" returning="product" />
@@ -25,7 +25,6 @@
          </aop:aspect>
     </aop:config>
 
-
-  <bean id=" myFirstAspect " class="sample.aop. MyFirstAspect " />
+  <bean id="myFirstAspect" class="sample.aop.MyFirstAspect" />
 
 </beans>

@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.springframework.samples.batch</groupId>
-	<artifactId>spring-batch-simple</artifactId>
-	<version>2.0.0.CI-SNAPSHOT</version>
+	<groupId>sample</groupId>
+	<artifactId>batch-entry</artifactId>
+	<version>1.0.0-RELEASE</version>
 	<packaging>jar</packaging>
-	<name>Command Line Spring Batch Module</name>
+	<name>Batch Entry</name>
 	<url>http://www.springframework.org/spring-batch/archetypes/simple-cli-archetype</url>
 	<description>
 		<![CDATA[

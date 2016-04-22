@@ -1,5 +1,11 @@
-���s
-main�N���X�Ɉȉ���ݒ肷��B
-org.springframework.batch.core.launch.support.CommandLineJobRunner
-�����Ɉȉ���ݒ肷��Bcsv�t�@�C���̖��O�͓K�X�C������B
-classpath:/batch-context.xml job1 inputFile=classpath:/product_csv/3.csv
+***サンプルの実行方法***
+[HSQLDBの起動]
+1.HSQLDBが起動していない場合、HSQLDBをインメモリ(書籍ではlocal Server)で起動する。
+1-1. HSQLDB(1.8.0)をダウンロードし、libフォルダで以下のコマンドをうって起動する(このサンプルではインメモリ)。
+・java -cp hsqldb.jar org.hsqldb.util.DatabaseManager
+
+[Eclipseからの動作確認]
+1.batch-basicプロジェクトを選択し、右クリックでRun as > Run Configurations...を選択する。
+2.ダイアログが表示されるので、mainタブのプロジェクトに「batch-basic」を、mainクラスに「org.springframework.batch.core.launch.support.CommandLineJobRunner」を設定する。
+3.Argumentタブを選択し、Proguram argumentsに「classpath:/batch-context.xml job1 inputFile=classpath:/product_csv/1.csv」を設定する。
+4.Runボタンをクリックすると、バッチが実行される（Consoleビューで動作が確認可能）。

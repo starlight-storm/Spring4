@@ -25,13 +25,13 @@ public class MyFirstAspect {
         System.out.println("-----> 仮引数の値を取得するよ：" + o[0]);
     }
 
-    @After("execution(* findProduct(String))")
+    @After("execution(* findByProductName(String))")
     public void after() {
         // メソッド終了後にWeavingするAdvice
         System.out.println("Hello After! *** メソッドが呼ばれた後に出てくるよ!");
     }
 
-    @AfterReturning(value = "execution(* findProduct(String))", returning = "product")
+    @AfterReturning(value = "execution(* findByProductName(String))", returning = "product")
     public void afterReturning(JoinPoint jp, Product product) {
         // メソッド呼出が例外の送出なしに終了した際に呼ばれるAdvice
         System.out.println("Hello AfterReturning! *** メソッドを呼んだ後に出てくるよ");
@@ -42,7 +42,7 @@ public class MyFirstAspect {
         System.out.println("-----> 仮引数の値を取得するよ：" + o[0]);
     }
 
-    @Around("execution(* findProduct(String))")
+    @Around("execution(* findByProductName(String))")
     public Product around(ProceedingJoinPoint pjp) throws Throwable {
         // メソッド呼出の前後にWeavingするAdvice
         System.out.println("Hello Around! before *** メソッドを呼ぶ前に出てくるよ!");

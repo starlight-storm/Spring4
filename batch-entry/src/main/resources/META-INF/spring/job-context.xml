@@ -9,7 +9,7 @@
 		<batch:step id="step1">
 			<batch:tasklet>
 				<batch:chunk reader="itemReader" processor="itemProcessor"
-					writer="itemWriter" commit-interval="1" skip-limit="2">
+					writer="itemWriter" commit-interval="1" skip-limit="1">
 					<batch:skippable-exception-classes>
 						<batch:include class="sample.batch.exception.BatchSkipException" />
 					</batch:skippable-exception-classes>

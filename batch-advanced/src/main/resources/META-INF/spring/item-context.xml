@@ -24,7 +24,7 @@
 				</property>
 			</bean>
 		</property>
-		<property name="resource" value="#{jobParameters[productFile]}" />
+		<property name="resource" value="#{jobParameters[inputFile]}" />
 		<!-- 1行目（見出し）を飛ばす -->
 		<property name="linesToSkip" value="1" />
 	</bean>

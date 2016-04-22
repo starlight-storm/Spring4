@@ -24,11 +24,9 @@
 
 	<context:property-placeholder location="classpath:/META-INF/jdbc.properties" />
 
-<!--
 	<jdbc:initialize-database data-source="batchDataSource">
-		<jdbc:script location="${batch.schema.script}" />
+		<jdbc:script location="${batch.schema.init.script}" />
 	</jdbc:initialize-database>
--->
  
 	<bean id="batchDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="${batch.jdbc.driver}" />

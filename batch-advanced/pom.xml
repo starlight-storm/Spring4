@@ -3,15 +3,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.springframework.samples.batch</groupId>
-	<artifactId>spring-batch-simple</artifactId>
-	<version>2.0.0.CI-SNAPSHOT</version>
+	<groupId>sample</groupId>
+	<artifactId>batch-advance</artifactId>
+	<version>1.0.0-RELEASE</version>
 	<packaging>jar</packaging>
-	<name>Command Line Spring Batch Module</name>
+	<name>Batch Advance</name>
 	<url>http://www.springframework.org/spring-batch/archetypes/simple-cli-archetype</url>
 	<description>
 		<![CDATA[
-      This project is a minimal command line batch sample from Spring Batch.  
+      This project is a minimal command line batch sample from Spring Batch.
     ]]>
 	</description>
 	<properties>
@@ -38,14 +38,14 @@
 					<version>1.0.1</version>
 				</dependency>
 			</dependencies>
-		</profile>	 
+		</profile>
 	</profiles>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
+			<version>4.9</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -137,7 +137,7 @@
 	</dependencies>
 
 	<build>
-		 
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -147,7 +147,7 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			 
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -162,7 +162,7 @@
 					</arguments>
 				</configuration>
 			</plugin>
-		 
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -189,5 +189,5 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
- 
+
 </project>

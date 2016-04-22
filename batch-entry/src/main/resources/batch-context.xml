@@ -12,12 +12,15 @@
 
 	<context:component-scan base-package="sample.batch" />
 	<import resource="classpath:/META-INF/spring/job-context.xml" />
+       <!-- batch-entryでは使わない
+       <import resource="classpath:/META-INF/spring/item-context.xml" />
+       -->
 
 	<bean id="jobLauncher"
 		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
 		<property name="jobRepository" ref="jobRepository" />
 	</bean>
-
+	
 	<batch:job-repository id="jobRepository"
 		data-source="jobDataSource" transaction-manager="transactionManager" />
 
@@ -38,5 +41,5 @@
 	<jdbc:initialize-database data-source="jobDataSource">
 		<jdbc:script location="${batch.schema.init.script}" />
 	</jdbc:initialize-database>
-
+	
 </beans>
