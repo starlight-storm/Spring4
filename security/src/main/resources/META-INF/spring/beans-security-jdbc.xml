@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+
+  <http>
+    <intercept-url method="GET" pattern="/login.jsp" access="permitAll()" />
+    <intercept-url method="POST" pattern="/processLogin" access="permitAll()" />
+    <intercept-url method="POST" pattern="/logout" access="isAuthenticated()" />
+    <intercept-url method="GET" pattern="/top.jsp" access="permitAll()" />
+    <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
+    <intercept-url pattern="/**" access="isAuthenticated()" />
+    <form-login
+      login-page="/login.jsp"
+      login-processing-url="/processLogin"
+      default-target-url="/top.jsp"
+      authentication-failure-url="/login.jsp"
+      username-parameter="paramLoginId"
+      password-parameter="paramPassword"/>
+    <logout logout-url="/logout" logout-success-url="/top.jsp"/>
+    <access-denied-handler error-page="/accessDenied.jsp"/>
+    <csrf />
+  </http>
+
+  <authentication-manager>
+    <authentication-provider>
+      <password-encoder hash="bcrypt"/>
+      <jdbc-user-service data-source-ref="authDataSource"
+          users-by-username-query
+            ="select LOGIN_ID, PASSWORD, true
+              from T_USER
+              where LOGIN_ID = ?"
+          authorities-by-username-query
+            ="select LOGIN_ID, ROLE_NAME
+              from T_ROLE
+                inner join T_USER_ROLE on T_ROLE.ID = T_USER_ROLE.ROLE_ID
+                inner join T_USER on T_USER_ROLE.USER_ID = T_USER.ID
+              where LOGIN_ID = ?" />
+    </authentication-provider>
+  </authentication-manager>
+
+</beans:beans>

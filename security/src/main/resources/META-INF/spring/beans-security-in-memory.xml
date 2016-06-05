@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+  <http>
+    <intercept-url method="GET" pattern="/login.jsp" access="permitAll()" />
+    <intercept-url method="POST" pattern="/processLogin" access="permitAll()" />
+    <intercept-url method="POST" pattern="/logout" access="isAuthenticated()" />
+    <intercept-url method="GET" pattern="/top.jsp" access="permitAll()" />
+    <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
+    <intercept-url pattern="/**" access="isAuthenticated()" />
+    <form-login
+      login-page="/login.jsp"
+      login-processing-url="/processLogin"
+      default-target-url="/top.jsp"
+      authentication-failure-url="/login.jsp"
+      username-parameter="paramLoginId"
+      password-parameter="paramPassword"/>
+    <logout logout-url="/logout" logout-success-url="/top.jsp"/>
+    <access-denied-handler error-page="/accessDenied.jsp"/>
+    <csrf />
+  </http>
+
+  <authentication-manager>
+    <authentication-provider>
+      <password-encoder hash="bcrypt"/>
+      <user-service>
+        <!-- password = userpassword -->
+        <user name="user"
+          password="$2a$10$nodSZsM7Lyi34l3/YEg61uTVDRIgH.DkM/WF4AM0BKTCGINBOnFOm"
+          authorities="ROLE_USER"/>
+        <!-- password = adminpassword -->
+        <user name="admin"
+          password="$2a$10$0VRu6ZC4zcuXZiS34AaPF.gDcbq25Z5lX01gnf97iBNdl4WeCbCXC"
+          authorities="ROLE_ADMIN"/>
+      </user-service>
+    </authentication-provider>
+  </authentication-manager>
+
+</beans:beans>
