@@ -9,20 +9,22 @@ import sample.config.AppConfig;
 
 public class ProductSampleRun {
 
-    public static void main(String[] args) {
-        ProductSampleRun productSampleRun = new ProductSampleRun();
-        productSampleRun.execute();
-    }
+	public static void main(String[] args) {
+		ProductSampleRun productSampleRun = new ProductSampleRun();
+		productSampleRun.execute();
+	}
 
-    @SuppressWarnings("resource")
+	@SuppressWarnings("resource")
 	public void execute() {
-    	BeanFactory ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+		BeanFactory ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 
-        ProductService productService = ctx.getBean(ProductService.class);
+		ProductService productService = ctx.getBean(ProductService.class);
 
-        productService.addProduct(new Product("ホチキス", 100));
+		productService.addProduct(new Product("ホチキス", 100));
 
-        Product product = productService.findByProductName("ホチキス");
-        System.out.println(product);
-    }
+		// 注意：説明の都合上、DAOのメソッド名を"2.1 SpringのDI"のサンプルとは変えています。
+		// findByProductName ---> findProduct
+		Product product = productService.findByProductName("ホチキス");
+		System.out.println(product);
+	}
 }

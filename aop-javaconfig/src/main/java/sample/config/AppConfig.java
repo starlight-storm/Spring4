@@ -15,12 +15,12 @@ public class AppConfig {
 	public ProductServiceImpl productService() {
 		return new ProductServiceImpl();
 	}
-	
+
 	@Bean
 	public ProductDaoImpl productDao() {
 		return new ProductDaoImpl();
 	}
-	
+
 	@Bean
 	public MyFirstAspect myFirstAspect() {
 		return new MyFirstAspect();
