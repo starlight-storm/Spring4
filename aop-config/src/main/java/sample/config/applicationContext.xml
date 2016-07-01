@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:aop="http://www.springframework.org/schema/aop"
-    xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
      http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans.xsd
      http://www.springframework.org/schema/context
@@ -12,19 +11,25 @@
      http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-  <context:component-scan base-package="sample.aop" />
+	<context:component-scan base-package="sample.aop" />
 
-    <aop:config>
-        <aop:aspect id="myAspect" ref="myFirstAspect">
-            <aop:pointcut id="pc" expression="execution(* findByProductName(String))"/>
-            <aop:before pointcut-ref="pc" method="before"/>
-            <aop:after pointcut-ref="pc" method="after"/>
-            <aop:after-returning pointcut-ref="pc" method="afterReturning" returning="product" />
-            <aop:around pointcut-ref="pc" method="around"/>
-            <aop:after-throwing pointcut-ref="pc" method="afterThrowing" throwing = "ex" />
-         </aop:aspect>
-    </aop:config>
+	<!-- 
+	注意：説明の都合上、DAOのメソッド名を"2.1 SpringのDI"のサンプルとは変えています。
+	findByProductName -> findProduct
+	-->
+	<aop:config>
+		<aop:aspect id="myAspect" ref="myFirstAspect">
+			<aop:pointcut id="pc" expression="execution(* findProduct(String))" />
+			<aop:before pointcut-ref="pc" method="before" />
+			<aop:after pointcut-ref="pc" method="after" />
+			<aop:after-returning pointcut-ref="pc"
+				method="afterReturning" returning="product" />
+			<aop:around pointcut-ref="pc" method="around" />
+			<aop:after-throwing pointcut-ref="pc" method="afterThrowing"
+				throwing="ex" />
+		</aop:aspect>
+	</aop:config>
 
-  <bean id="myFirstAspect" class="sample.aop.MyFirstAspect" />
+	<bean id="myFirstAspect" class="sample.aop.MyFirstAspect" />
 
 </beans>
