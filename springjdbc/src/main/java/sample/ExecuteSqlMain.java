@@ -284,6 +284,35 @@ public class ExecuteSqlMain {
         pet.setOwnerName("owner003");
         
         pList.add(pet);
+                
+        //IN句
+        List<Integer> ids = new ArrayList<Integer>();
+        ids.add(1);
+        ids.add(2);
+        ids.add(3);
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("ids", ids);
+        petList = namedParameterJdbcTemplate.query(
+            "SELECT * FROM PET WHERE PET_ID IN (:ids)", 
+            param, 
+            new RowMapper<Pet>() {
+                public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Pet p = new Pet();
+                    p.setPetId(rs.getInt("PET_ID"));
+                    p.setPetName(rs.getString("PET_NAME"));
+                    p.setOwnerName(rs.getString("OWNER_NAME"));
+                    p.setPrice((Integer)rs.getObject("PRICE"));
+                    p.setBirthDate(rs.getDate("BIRTH_DATE"));
+                    return p;
+                }
+            }
+        );
+        
+        System.out.println("IN句");
+        for (Pet p : petList) {
+            System.out.println(p.getPetId());
+        }
+        
         
         //JdbcTemplateのbatchUpdate
         int[] num = jdbcTemplate.batchUpdate("UPDATE PET SET OWNER_NAME=? WHERE PET_ID=?", new BatchPreparedStatementSetter() {            
