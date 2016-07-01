@@ -20,7 +20,7 @@ public class ProductSampleRun {
 
 		productService.addProduct(new Product("ホチキス", 100));
 
-		// 注意：説明の都合上、DAOのメソッド名を"2.1 SpringのDI"のサンプルとは変えています。
+		// 注意：説明の都合上、DAOのメソッド名を"2.1 SpringのDI"のサンプルと変えています。
 		// findByProductName ---> findProduct
 		Product product = productService.findByProductName("ホチキス");
 		System.out.println(product);
