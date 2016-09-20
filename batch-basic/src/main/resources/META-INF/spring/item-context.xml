@@ -7,6 +7,8 @@
 
 	<bean id="productItemReader" class="org.springframework.batch.item.file.FlatFileItemReader"
 		scope="step">
+		<property name="resource" value="#{jobParameters[inputFile]}" />
+		<property name="linesToSkip" value="1" />
 		<property name="lineMapper">
 			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
 				<property name="lineTokenizer">
@@ -24,10 +26,19 @@
 				</property>
 			</bean>
 		</property>
-		<property name="resource" value="#{jobParameters[inputFile]}" />
-		<!-- 1行目（見出し）を飛ばす -->
-		<property name="linesToSkip" value="1" />
 	</bean>
+	
+	<bean id="productItemProcessor"
+		class="org.springframework.batch.item.validator.ValidatingItemProcessor">
+		<property name="validator">
+			<bean class="org.springframework.batch.item.validator.SpringValidator">
+				<property name="validator" ref="validator" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean name="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 
 	<bean id="productItemWriter"
 		class="org.springframework.batch.item.database.JdbcBatchItemWriter">
@@ -39,18 +50,5 @@
 				class="org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider" />
 		</property>
 	</bean>
-
-	<bean id="productItemProcessor"
-		class="org.springframework.batch.item.validator.ValidatingItemProcessor">
-		<property name="validator">
-			<bean class="org.springframework.batch.item.validator.SpringValidator">
-				<property name="validator" ref="validator" />
-			</bean>
-		</property>
-	</bean>
-
-	<!-- Validatorを生成するファクトリー。 クラスパスにHibernateValidatorがあればそれを自動的に使用する。メッセージソースを設定することもできる。 -->
-	<bean name="validator"
-		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 
 </beans>
