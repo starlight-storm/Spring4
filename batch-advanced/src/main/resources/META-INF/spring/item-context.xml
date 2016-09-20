@@ -54,6 +54,7 @@
 
 	<bean id="memberItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
 		<property name="resource" value="file:c:/member.csv" />
+		<!--  <property name="resource" value="file:/Users/hoge/Documents/member.csv" /> -->
 		<property name="shouldDeleteIfExists" value="true"/><!-- true:上書きを許す -->
 		<property name="lineAggregator">
 			<bean
